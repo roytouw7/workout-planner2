@@ -36,25 +36,31 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.handler = void 0;
-var excerciseQueries_1 = require("./utils/excerciseQueries");
-var formattedResponse_1 = require("./utils/formattedResponse");
-var sendQuery_1 = require("./utils/sendQuery");
-var handler = function () { return __awaiter(void 0, void 0, void 0, function () {
-    var response, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                _a.trys.push([0, 2, , 3]);
-                return [4 /*yield*/, sendQuery_1.sendQuery(excerciseQueries_1.GET_EXCERCISES, [])];
+exports.sendQuery = void 0;
+var axios_1 = require("axios");
+var sendQuery = function (query, variables) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, data, errors;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0: return [4 /*yield*/, axios_1["default"]({
+                    url: "https://graphql.fauna.com/graphql",
+                    method: "POST",
+                    headers: {
+                        Authorization: "Bearer " + process.env.FAUNA_SECRET_KEY
+                    },
+                    data: {
+                        query: query,
+                        variables: {}
+                    }
+                })];
             case 1:
-                response = _a.sent();
-                return [2 /*return*/, formattedResponse_1.formattedResponse(200, response.allExcersises.data)];
-            case 2:
-                err_1 = _a.sent();
-                return [2 /*return*/, formattedResponse_1.formattedResponse(500, { err: "Failed fetching excercises!" })];
-            case 3: return [2 /*return*/];
+                _a = (_b.sent()).data, data = _a.data, errors = _a.errors;
+                if (errors) {
+                    console.error(errors);
+                    throw new Error("Failed executing query.");
+                }
+                return [2 /*return*/, data];
         }
     });
 }); };
-exports.handler = handler;
+exports.sendQuery = sendQuery;

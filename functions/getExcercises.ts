@@ -1,33 +1,14 @@
 import { APIGatewayProxyEvent } from "aws-lambda";
-import axios from 'axios';
+import axios from "axios";
+import { GET_EXCERCISES } from "./utils/excerciseQueries";
+import { formattedResponse } from "./utils/formattedResponse";
+import { sendQuery } from "./utils/sendQuery";
 
-export const handler = async(event: APIGatewayProxyEvent) => {
-    const GET_EXCERCISES = `
-        query {
-            allExcersises {
-                data {
-                    name
-                    description
-                }
-            }
-        }`;
-    
-    const { data } = await axios({
-        url: 'https://graphql.fauna.com/graphql',
-        method: 'POST',
-        headers: {
-            Authorization: `Bearer ${process.env.FAUNA_SECRET_KEY}`
-        },
-        data: {
-            query: GET_EXCERCISES,
-            variables: {}
-        }
-    });
-
-    console.log(data);
-
-    return {
-        statusCode: 200,
-        body: JSON.stringify(data)
-    };
+export const handler = async () => {
+  try {
+    const response = await sendQuery<any>(GET_EXCERCISES, []);
+    return formattedResponse(200, response.allExcersises.data);
+  } catch (err) {
+    return formattedResponse(500, { err: "Failed fetching excercises!" });
+  }
 };
