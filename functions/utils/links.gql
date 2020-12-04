@@ -1,0 +1,8 @@
+type Excersise {
+    name: String!
+    description: String
+}
+
+type Query {
+    allExcersises: [Excersise!]!
+}
