@@ -37,12 +37,25 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 exports.__esModule = true;
 exports.handler = void 0;
-var handler = function (event, context, callback) { return __awaiter(void 0, void 0, void 0, function () {
-    return __generator(this, function (_a) {
-        return [2 /*return*/, {
-                statusCode: 200,
-                body: JSON.stringify({ msg: 'Hello World!' })
-            }];
+var excerciseQueries_1 = require("./utils/excerciseQueries");
+var formattedResponse_1 = require("./utils/formattedResponse");
+var sendQuery_1 = require("./utils/sendQuery");
+var handler = function (event) { return __awaiter(void 0, void 0, void 0, function () {
+    var _a, name_1, description, response, err_1;
+    return __generator(this, function (_b) {
+        switch (_b.label) {
+            case 0:
+                _b.trys.push([0, 2, , 3]);
+                _a = JSON.parse(event.body), name_1 = _a.name, description = _a.description;
+                return [4 /*yield*/, sendQuery_1.sendQuery(excerciseQueries_1.CREATE_EXCERCISE(name_1, description), [])];
+            case 1:
+                response = _b.sent();
+                return [2 /*return*/, formattedResponse_1.formattedResponse(200, response.createExcersise)];
+            case 2:
+                err_1 = _b.sent();
+                return [2 /*return*/, formattedResponse_1.formattedResponse(500, { err: 'Failed creating excercise!' })];
+            case 3: return [2 /*return*/];
+        }
     });
 }); };
 exports.handler = handler;

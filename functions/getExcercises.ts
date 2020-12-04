@@ -1,5 +1,3 @@
-import { APIGatewayProxyEvent } from "aws-lambda";
-import axios from "axios";
 import { GET_EXCERCISES } from "./utils/excerciseQueries";
 import { formattedResponse } from "./utils/formattedResponse";
 import { sendQuery } from "./utils/sendQuery";
